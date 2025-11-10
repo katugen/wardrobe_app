@@ -1,0 +1,26 @@
+Table clothes {
+  id           bigint        [pk, increment]
+  name         varchar(255)  [not null, note: '服の名前']
+  category_id  bigint        [note: 'カテゴリID']
+  color        varchar(50)   [note: '色']
+  size         varchar(20)   [note: 'サイズ']
+  brand        varchar(100)  [note: 'ブランド名']
+  memo         text          [note: '備考']
+  created_at   timestamp
+  updated_at   timestamp
+}
+
+Table categories {
+  id           bigint        [pk, increment]
+  name         varchar(100)  [not null, note: 'カテゴリ名']
+}
+
+Table photos {
+  id           bigint        [pk, increment]
+  clothes_id   bigint        [note: '服ID（clothes.idへの外部キー）']
+  path         varchar(255)  [not null, note: '画像パス']
+  created_at   timestamp
+}
+
+Ref: clothes.category_id > categories.id
+Ref: photos.clothes_id > clothes.id
