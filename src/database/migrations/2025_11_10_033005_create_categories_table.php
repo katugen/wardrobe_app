@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
+            $table->string('name');         // カテゴリ名（例：シャツ、パンツ、アウター）
+            $table->string('description')->nullable(); // 説明文
             $table->timestamps();
         });
     }

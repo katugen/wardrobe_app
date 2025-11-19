@@ -37,5 +37,19 @@ services:
     ports:
       - "3306:3306"
 
+  phpmyadmin:
+    container_name: phpmyadmin
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    ports:
+      - "8081:80"       # ← web が 8080 を使っているので 8081 にしています
+    environment:
+      PMA_HOST: db      # ← service 名（db）を書く。container_name ではない
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: root
+    depends_on:
+      - db
+
 volumes:
   db_data:

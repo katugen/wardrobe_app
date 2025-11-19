@@ -16,8 +16,16 @@ use OpenApi\Annotations as OA;
  *     @OA\Property(property="color", type="string", example="white", nullable=true),
  *     @OA\Property(property="size", type="string", example="M", nullable=true),
  *     @OA\Property(property="brand", type="string", example="UNIQLO", nullable=true),
+ *     @OA\Property(
+ *         property="category",
+ *         type="object",
+ *         nullable=true,
+ *         @OA\Property(property="id", type="integer", example=2),
+ *         @OA\Property(property="name", type="string", example="トップス")
+ *     ),
  * )
  */
+
 class ClothesController extends Controller
 {
     /**
@@ -39,7 +47,10 @@ class ClothesController extends Controller
      */
     public function index()
     {
-        return response()->json(Clothes::all());
+        // カテゴリ情報も一緒に取得（Eager Loading）
+        $clothes_list = Clothes::with('category')->get();
+
+        return response()->json($clothes_list);
     }
 
     /**
@@ -82,6 +93,9 @@ class ClothesController extends Controller
         ]);
 
         $clothes = Clothes::create($validated);
+
+        // 登録後に category をロード
+        $clothes->load('category');
         return response()->json($clothes, 201);
     }
 
@@ -91,7 +105,7 @@ class ClothesController extends Controller
      * @OA\Delete(
      *     path="/api/clothes/{id}",
      *     summary="服を削除する",
- *     tags={"Clothes"},
+     *     tags={"Clothes"},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
