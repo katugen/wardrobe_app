@@ -1,111 +1,250 @@
 {
-  "openapi": "3.0.0",
-  "info": {
-    "title": "WardrobeApp API",
-    "description": "服管理アプリのAPI仕様書（Swagger定義）",
-    "version": "1.0.0"
-  },
-  "servers": [
-    {
-      "url": "http://localhost:8080/api",
-      "description": "Local API Server"
-    }
-  ],
-  "paths": {
-    "/clothes": {
-      "get": {
-        "summary": "服一覧を取得する",
-        "tags": ["Clothes"],
-        "responses": {
-          "200": {
-            "description": "成功",
-            "content": {
-              "application/json": {
-                "example": [
-                  {
-                    "id": 1,
-                    "name": "白シャツ",
-                    "category_id": 2,
-                    "color": "white",
-                    "size": "M",
-                    "brand": "UNIQLO"
-                  }
-                ]
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "summary": "服を登録する",
-        "tags": ["Clothes"],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "name": { "type": "string" },
-                  "category_id": { "type": "integer" },
-                  "color": { "type": "string" },
-                  "size": { "type": "string" },
-                  "brand": { "type": "string" }
-                },
-                "required": ["name", "category_id"]
-              },
-              "example": {
-                "name": "青シャツ",
-                "category_id": 1,
-                "color": "blue",
-                "size": "M",
-                "brand": "BEAMS"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "作成成功",
-            "content": {
-              "application/json": {
-                "example": {
-                  "id": 3,
-                  "name": "青シャツ",
-                  "category_id": 1,
-                  "color": "blue",
-                  "size": "M",
-                  "brand": "BEAMS"
-                }
-              }
-            }
-          }
-        }
-      }
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Swagger Test API",
+        "description": "L5-Swagger の動作確認用API",
+        "version": "1.0.0"
     },
-    "/clothes/{id}": {
-      "delete": {
-        "summary": "服を削除する",
-        "tags": ["Clothes"],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": { "type": "integer" }
-          }
-        ],
-        "responses": {
-          "204": { "description": "削除成功（No Content）" },
-          "404": { "description": "対象が存在しない場合" }
+    "paths": {
+        "/api/clothes": {
+            "get": {
+                "tags": [
+                    "Clothes"
+                ],
+                "summary": "服一覧を取得する",
+                "description": "服一覧を取得する",
+                "operationId": "214e41110983ba0a8dc43ff13962fc26",
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Clothes"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Clothes"
+                ],
+                "summary": "服を登録する",
+                "description": "服を登録する",
+                "operationId": "584aad8a77ae90c2ed14dcc7d55ce65e",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "青シャツ"
+                                    },
+                                    "category_id": {
+                                        "type": "integer",
+                                        "example": 1,
+                                        "nullable": true
+                                    },
+                                    "color": {
+                                        "type": "string",
+                                        "example": "blue",
+                                        "nullable": true
+                                    },
+                                    "size": {
+                                        "type": "string",
+                                        "example": "M",
+                                        "nullable": true
+                                    },
+                                    "brand": {
+                                        "type": "string",
+                                        "example": "BEAMS",
+                                        "nullable": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "作成成功",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Clothes"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "バリデーションエラー"
+                    }
+                }
+            }
+        },
+        "/api/clothes/{id}": {
+            "delete": {
+                "tags": [
+                    "Clothes"
+                ],
+                "summary": "服を削除する",
+                "description": "服を削除する",
+                "operationId": "7df7da3370fc7e57f542c04a06f2f72c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "削除対象の服ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "削除成功（No Content）"
+                    },
+                    "404": {
+                        "description": "対象が存在しない場合"
+                    }
+                }
+            }
+        },
+        "/api/hello": {
+            "get": {
+                "summary": "Helloテスト",
+                "description": "Swaggerが正しく生成されるか確認するAPI",
+                "operationId": "0bd383d6a516c30d07a212f614990a52",
+                "responses": {
+                    "200": {
+                        "description": "成功時レスポンス"
+                    }
+                }
+            }
+        },
+        "/api/users": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "ユーザーを登録する",
+                "description": "新規ユーザーを作成します。",
+                "operationId": "0107a7c05fd7303419e3aa1150155e5f",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "田中太郎"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "taro@example.com"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "作成成功",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "田中太郎"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "taro@example.com"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
-      }
-    }
-  },
-  "tags": [
-    {
-      "name": "Clothes",
-      "description": "服関連API"
-    }
-  ]
+    },
+    "components": {
+        "schemas": {
+            "Clothes": {
+                "required": [
+                    "id",
+                    "name"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "白シャツ"
+                    },
+                    "category_id": {
+                        "type": "integer",
+                        "example": 2,
+                        "nullable": true
+                    },
+                    "color": {
+                        "type": "string",
+                        "example": "white",
+                        "nullable": true
+                    },
+                    "size": {
+                        "type": "string",
+                        "example": "M",
+                        "nullable": true
+                    },
+                    "brand": {
+                        "type": "string",
+                        "example": "UNIQLO",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Clothes",
+            "description": "Clothes"
+        },
+        {
+            "name": "User",
+            "description": "User"
+        }
+    ]
 }
